@@ -1,0 +1,15 @@
+{
+  "name": "medifinder-qa",
+  "version": "1.0.0",
+  "description": "Playwright E2E test suite for MediFinder — QA Challenge submission",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.44.0",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.4.0"
+  }
+}
