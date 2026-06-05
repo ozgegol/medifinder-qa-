@@ -8,18 +8,16 @@ export class ConsultationModal {
   readonly adInput: Locator;
   readonly soyadInput: Locator;
   readonly emailInput: Locator;
-  readonly phoneNumberInput: Locator;
   readonly submitButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
-    this.serviceSearchInput  = page.getByPlaceholder('Hizmet ara');
-    this.countrySearchInput  = page.getByPlaceholder('Ülke ara');
-    this.emailInput          = page.getByPlaceholder('E-posta adresi');
-    this.phoneNumberInput    = page.getByPlaceholder('Telefon numarası');
-    this.submitButton        = page.getByRole('button', { name: /^Gönder$/i });
-    this.adInput             = page.getByPlaceholder('Ad', { exact: true }).last();
-    this.soyadInput          = page.getByPlaceholder('Soyad', { exact: true }).last();
+    this.serviceSearchInput = page.getByPlaceholder('Hizmet ara');
+    this.countrySearchInput = page.getByPlaceholder('Ülke ara');
+    this.emailInput         = page.getByPlaceholder('E-posta adresi');
+    this.submitButton       = page.getByRole('button', { name: /^Gönder$/i });
+    this.adInput            = page.getByPlaceholder('Ad', { exact: true }).last();
+    this.soyadInput         = page.getByPlaceholder('Soyad', { exact: true }).last();
   }
 
   async expectVisible(): Promise<void> {
@@ -47,7 +45,13 @@ export class ConsultationModal {
 
   async fillContactInfo(email: string, phoneNumber: string): Promise<void> {
     await this.emailInput.fill(email);
-    await this.phoneNumberInput.fill(phoneNumber);
+
+    // Telefon alanı: önce ülke kodu seçilmeli, sonra numara girilebilir
+    const dialog = this.page.getByRole('dialog');
+    await dialog.getByRole('button', { name: /select country code/i }).click();
+    await this.page.getByText('TR').first().click();
+    await dialog.getByRole('textbox', { name: 'Telefon numarası' }).fill(phoneNumber);
+
     await expect(this.emailInput).toHaveValue(email);
   }
 
