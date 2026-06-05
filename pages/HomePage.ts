@@ -14,8 +14,8 @@ export class HomePage {
 
   constructor(page: Page) {
     this.page = page;
-    this.adInput = page.getByPlaceholder('Ad');
-    this.soyadInput = page.getByPlaceholder('Soyad');
+    this.adInput = page.getByPlaceholder('Ad', { exact: true });
+    this.soyadInput = page.getByPlaceholder('Soyad', { exact: true });
     this.consultationButton = page.getByRole('button', { name: /Konsültasyon talebi/i });
   }
 
