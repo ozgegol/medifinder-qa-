@@ -46,10 +46,17 @@ export class ConsultationModal {
   async fillContactInfo(email: string, phoneNumber: string): Promise<void> {
     await this.emailInput.fill(email);
 
-    // Telefon alanı: önce ülke kodu seçilmeli, sonra numara girilebilir
+    // Ülke kodu dropdown'unu aç
     const dialog = this.page.getByRole('dialog');
     await dialog.getByRole('button', { name: /select country code/i }).click();
-    await this.page.getByText('TR').first().click();
+
+    // Dropdown içindeki search input'a "TR" yaz
+    await this.page.getByPlaceholder('Search country or code').fill('TR');
+
+    // Tam adıyla "TR Türkiye +90" butonuna tıkla
+    await this.page.getByRole('button', { name: 'TR Türkiye +90' }).click();
+
+    // Numara gir
     await dialog.getByRole('textbox', { name: 'Telefon numarası' }).fill(phoneNumber);
 
     await expect(this.emailInput).toHaveValue(email);
